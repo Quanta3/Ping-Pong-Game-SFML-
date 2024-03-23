@@ -10,6 +10,8 @@ class objects{
     bool isFixed;
     sf::Vector2f velocity;
     sf::Vector2f position;
+    sf::Vector2f size;
+    string type;
 
 
     public:
@@ -17,10 +19,21 @@ class objects{
             return position;
         }
 
+        sf::Vector2f getSize_(){
+            return size;
+        }
+
         virtual void Draw(){
             cout<<"incorrect";
         };
 
+        virtual void collisionHandler(objects* obj){
+           // cout<<"Incorrect";
+        }
+
+        string getType(){
+            return type;
+        }
        
 };
 

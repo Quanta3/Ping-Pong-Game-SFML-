@@ -3,6 +3,7 @@
 #include "headers/platform.cpp"
 #include "headers/player.cpp"
 #include "headers/object.cpp"
+#include "headers/collision.cpp"
 #include <Vector>
 
 void Draw(vector<objects*> &obj);
@@ -16,10 +17,14 @@ int main()
     Player p1(50, 200, window);
     Player p2(50, 200, window);
 
-    
-    plt2.setPosition_(0, 1024-40);
+    plt1.setPosition_(512, 20);
+    plt2.setPosition_(512, 1024-40);
     p1.setPosition_(35, 512);
+    p1.setKeys(sf::Keyboard::W, sf::Keyboard::S);
     p2.setPosition_(1024-35, 512);
+    p2.setKeys(sf::Keyboard::Up, sf::Keyboard::Down);
+
+    
 
     vector<objects*> obj;
     obj.push_back(&plt1);
@@ -29,16 +34,29 @@ int main()
     obj.push_back(&p2);
 
 
+    collision colObj;
+    
 
     while (window.isOpen())
     {
+
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
-        }
+              {  window.close();}
 
+              
+        
+        }
+        
+        ball.outOfBounds(p1, p2);
+        p1.update();
+        p2.update();
+        ball.update();
+
+        colObj.check_and_handle_Collisions(obj);
         window.clear();
         Draw(obj);
         window.display();
