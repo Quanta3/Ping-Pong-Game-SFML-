@@ -7,6 +7,8 @@ class Player: public objects{
         sf::RectangleShape player;
         sf::Keyboard::Key keyUp;
         sf::Keyboard::Key keyDown;
+        sf::Keyboard::Key right;
+        sf::Keyboard::Key left;
         
 
     
@@ -15,7 +17,7 @@ class Player: public objects{
         Player(float x, float y, sf::RenderWindow &window){
             size = sf::Vector2f(x , y);
             player.setSize(size);
-            velocity = sf::Vector2f(0, 2);
+            velocity = sf::Vector2f(0, 6);
             position = sf::Vector2f(0,0);
             isFixed = true;
             this->window=&window;
@@ -51,12 +53,26 @@ class Player: public objects{
                 temp.y=-1*velocity.y;
                 player.move(temp);
             }
+            else if(sf::Keyboard::isKeyPressed(right)){
+                sf::Vector2f temp;
+                temp.x=6;
+                temp.y=0;
+                player.move(temp);
+            }
+            else if(sf::Keyboard::isKeyPressed(left)){
+                sf::Vector2f temp;
+                temp.x=-6;
+                temp.y= 0;
+                player.move(temp);
+            }
             position = player.getPosition();
         }
 
-        void setKeys(sf::Keyboard::Key a, sf::Keyboard::Key b){
+        void setKeys(sf::Keyboard::Key a, sf::Keyboard::Key b, sf::Keyboard::Key r, sf::Keyboard::Key l){
             keyUp = a;
             keyDown = b;
+            right = r;
+            left = l;
         }
 
         void incrementPoints(){

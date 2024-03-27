@@ -4,6 +4,7 @@
 #include "headers/player.cpp"
 #include "headers/object.cpp"
 #include "headers/collision.cpp"
+#include "headers/text.cpp"
 #include <Vector>
 
 void Draw(vector<objects*> &obj);
@@ -16,13 +17,14 @@ int main()
     Ball ball(25, window);
     Player p1(50, 200, window);
     Player p2(50, 200, window);
+    text txt;
 
     plt1.setPosition_(512, 20);
     plt2.setPosition_(512, 1024-40);
     p1.setPosition_(35, 512);
-    p1.setKeys(sf::Keyboard::W, sf::Keyboard::S);
+    p1.setKeys(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::D, sf::Keyboard::A);
     p2.setPosition_(1024-35, 512);
-    p2.setKeys(sf::Keyboard::Up, sf::Keyboard::Down);
+    p2.setKeys(sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Right, sf::Keyboard::Left);
 
     
 
@@ -32,11 +34,13 @@ int main()
     obj.push_back(&ball);
     obj.push_back(&p1);
     obj.push_back(&p2);
+    //obj.push_back(&txt);
 
 
     collision colObj;
-    
 
+    
+    sf::Clock clock;
     while (window.isOpen())
     {
 
@@ -46,12 +50,20 @@ int main()
         {
             if (event.type == sf::Event::Closed)
               {  window.close();}
+            if(event.type == sf::Event::Resized){
+                cout<<"Resized";
+            }
 
               
         
         }
-        
-        ball.outOfBounds(p1, p2);
+        if(clock.getElapsedTime().asMilliseconds() > 10){
+            clock.restart();
+        }
+        else{
+            continue;
+        }
+        ball.outOfBounds(p1, p2, txt);
         p1.update();
         p2.update();
         ball.update();
@@ -59,6 +71,7 @@ int main()
         colObj.check_and_handle_Collisions(obj);
         window.clear();
         Draw(obj);
+        window.draw(txt.txt);
         window.display();
     }
 
